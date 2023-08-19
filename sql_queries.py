@@ -133,15 +133,66 @@ FORMAT as json 'auto';
 # FINAL TABLES
 
 songplay_table_insert = ("""
+INSERT INTO fact_songplays(
+    start_time ,
+    user_id ,
+    level ,
+    song_id ,
+    artist_id ,
+    session_id ,
+    location ,
+    user_agent 
+)
+SELECT
+   DISTINCT se.ts,se.userId , se.level,ss.song_id,ss.artist_id,se.sessionId ,se.userAgent ,ss.artist_location
+FROM
+    staging_events se  
+LEFT JOIN
+    staging_songs ss ON ( ss.artist_name = se.artist AND ss.title = se.song )
+    WHERE se.page = 'NextSong';
 """)
 
 user_table_insert = ("""
+INSERT INTO dim_users(
+    user_id,
+    first_name,
+    last_name,
+    gender,
+    level
+)SELECT
+    DISTINCT userId,firstname,lastname,gender,level
+FROM
+    staging_events
+WHERE
+    userId IS NOT NULL 
+    AND page = 'NextSong';
 """)
 
 song_table_insert = ("""
+INSERT INTO dim_songs(
+    song_id,
+    title,
+    artist_id,
+    year,
+    duration
+)SELECT
+    DISTINCT song_id,title,artist_id,year,duration
+FROM
+    staging_songs
 """)
 
 artist_table_insert = ("""
+INSERT INTO dim_artists(
+    artist_id,
+    name,
+    location,
+    latitude,
+    longitude
+)
+SELECT
+     DISTINCT artist_id,artist_name as name,artist_location as location,artist_latitude as latitude,artist_longitude as longitude
+FROM
+    staging_songs
 """)
 
 time_table_insert = ("""
