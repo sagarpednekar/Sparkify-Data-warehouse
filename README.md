@@ -1,5 +1,5 @@
 # Data Warehouse Project README
-
+![Alt text](https://file%2B.vscode-resource.vscode-cdn.net/Users/sagarpednekar/Downloads/sparkify-Page-1.drawio.png?version%3D1692485675306)
 ## Project: Sparkify Data Warehouse
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
