@@ -120,7 +120,7 @@ IAM_ROLE {}
 region 'us-west-2'
 format as json {}
 timeformat as 'epochmillisecs';
-""").format(config['S3']['LOG_DATA'], config['ARN'].config['S3']['LOG_JSONPATH'])
+""").format(config['S3']['LOG_DATA'], config['IAM_ROLE']['ARN'],config['S3']['LOG_JSONPATH'])
 
 staging_songs_copy = ("""
 COPY staging_songs 
@@ -128,7 +128,7 @@ FROM {}
 IAM_ROLE {}
 REGION 'us-west-2'
 FORMAT as json 'auto';
-""").format(config['S3']['SONG_DATA'], config['ARN'])
+""").format(config['S3']['SONG_DATA'], config['IAM_ROLE']['ARN'])
 
 # FINAL TABLES
 
